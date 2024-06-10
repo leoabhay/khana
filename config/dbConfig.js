@@ -1,23 +1,23 @@
 const mongoose = require('mongoose');
-const connect = mongoose.connect("mongodb://localhost:27017/khanakhajana");
 
-// Check database connected or not
-connect.then(() => {
-    console.log("Database Connected Successfully");
-})
-.catch(() => {
-    console.log("Database cannot be Connected");
-})
+mongoose.connect("mongodb://localhost:27017/khanakhajana")
+    .then(() => {
+        console.log("Database Connected Successfully");
+    })
+    .catch((error) => {
+        console.error("Database connection error:", error);
+    });
 
 // Create Schema
 const UserSchema = new mongoose.Schema({
     name: {
-        type:String,
+        type: String,
         required: true
     },
     email: {
         type: String,
-        required: true
+        required: true,
+        unique: true // Ensure email uniqueness
     },
     password: {
         type: String,
@@ -25,7 +25,7 @@ const UserSchema = new mongoose.Schema({
     }
 });
 
-// collection part
-const collection = new mongoose.model("users", UserSchema);
+// Create and export the model
+const User = mongoose.model("User", UserSchema);
 
-module.exports = collection;
+module.exports = User;
